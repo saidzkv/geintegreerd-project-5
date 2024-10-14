@@ -1,3 +1,6 @@
+using Inventory_Management_System.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace Inventory_Management_System
 {
     public class Program
@@ -5,9 +8,15 @@ namespace Inventory_Management_System
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var connectionString = builder.Configuration.GetConnectionString("IMS Database") ?? throw new InvalidOperationException("Connection string 'IMS Database' not found.");
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<IMSDatabaseContext>(options =>
+            {
+                options.UseSqlServer(connectionString);
+            });
 
             var app = builder.Build();
 
