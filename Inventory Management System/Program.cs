@@ -1,5 +1,6 @@
 using Inventory_Management_System.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Inventory_Management_System
 {
@@ -18,7 +19,28 @@ namespace Inventory_Management_System
                 options.UseSqlServer(connectionString);
             });
 
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<IMSDatabaseContext>();
+
+            builder.Services.AddRazorPages();
+
             var app = builder.Build();
+
+            var serviceProvider = app.Services.CreateScope().ServiceProvider;
+
+            /*var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var adminUser = await userManager.FindByEmailAsync("r0859927@ucll.be");
+            var userUser = await userManager.FindByEmailAsync("user@ucll.be");
+            var stockmanagerUser = await userManager.FindByEmailAsync("stockmanager@ucll.be");
+            await userManager.AddToRoleAsync(adminUser, "Administrator");
+            await userManager.AddToRoleAsync(userUser, "User");
+            await userManager.AddToRoleAsync(stockmanagerUser, "Stock manager");
+            
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            await roleManager.CreateAsync(new IdentityRole("Administrator"));
+            await roleManager.CreateAsync(new IdentityRole("User"));
+            await roleManager.CreateAsync(new IdentityRole("Stock manager"));*/
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -33,7 +55,10 @@ namespace Inventory_Management_System
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            app.MapRazorPages();
 
             app.MapControllerRoute(
                 name: "default",

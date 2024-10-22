@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Inventory_Management_System.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Inventory_Management_System.Controllers
 {
+    [Authorize(Roles ="Administrator, Stock manager")]
     public class StocksController : Controller
     {
         private readonly IMSDatabaseContext _context;

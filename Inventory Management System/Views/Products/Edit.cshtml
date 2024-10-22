@@ -13,21 +13,34 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ProductId" />
-            <div class="form-group">
-                <label asp-for="Naam" class="control-label"></label>
-                <input asp-for="Naam" class="form-control bg-dark text-light" />
-                <span asp-validation-for="Naam" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EAN" class="control-label"></label>
-                <input asp-for="EAN" class="form-control bg-dark text-light" />
-                <span asp-validation-for="EAN" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Stock" class="control-label"></label>
-                <input asp-for="Stock" class="form-control bg-dark text-light" />
-                <span asp-validation-for="Stock" class="text-danger"></span>
-            </div>
+            @if(User.IsInRole("Administrator")||User.IsInRole("Stock manager"))
+            {
+                <div class="form-group">
+                    <label asp-for="Naam" class="control-label"></label>
+                    <input asp-for="Naam" class="form-control bg-dark text-light" />
+                    <span asp-validation-for="Naam" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EAN" class="control-label"></label>
+                    <input asp-for="EAN" class="form-control bg-dark text-light" />
+                    <span asp-validation-for="EAN" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Stock" class="control-label"></label>
+                    <input asp-for="Stock" class="form-control bg-dark text-light" />
+                    <span asp-validation-for="Stock" class="text-danger"></span>
+                </div>
+            }
+            @if(User.IsInRole("User"))
+            {
+                <input type="hidden" asp-for="Naam" />
+                <input type="hidden" asp-for="EAN" />
+                <div class="form-group">
+                    <label asp-for="Stock" class="control-label"></label>
+                    <input asp-for="Stock" class="form-control bg-dark text-light" />
+                    <span asp-validation-for="Stock" class="text-danger"></span>
+                </div>
+            }
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-outline-primary mt-2" />
             </div>

@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Inventory_Management_System.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Inventory_Management_System.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly IMSDatabaseContext _context;
@@ -19,12 +21,14 @@ namespace Inventory_Management_System.Controllers
         }
 
         // GET: Products
+        [Authorize(Roles = "Administrator, Stock manager, User")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Products.ToListAsync());
         }
 
         // GET: Products/Details/5
+        [Authorize(Roles = "Administrator, Stock manager")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,6 +47,7 @@ namespace Inventory_Management_System.Controllers
         }
 
         // GET: Products/Create
+        [Authorize(Roles = "Administrator, Stock manager")]
         public IActionResult Create()
         {
             return View();
@@ -53,6 +58,7 @@ namespace Inventory_Management_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator, Stock manager")]
         public async Task<IActionResult> Create([Bind("ProductId,Naam,EAN,Stock")] Product product)
         {
             if (ModelState.IsValid)
@@ -71,6 +77,7 @@ namespace Inventory_Management_System.Controllers
         }
 
         // GET: Products/Edit/5
+        [Authorize(Roles = "Administrator, Stock manager, User")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -91,6 +98,7 @@ namespace Inventory_Management_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator, Stock manager, User")]
         public async Task<IActionResult> Edit(int id, [Bind("ProductId,Naam,EAN,Stock")] Product product)
         {
             if (id != product.ProductId)
@@ -133,6 +141,7 @@ namespace Inventory_Management_System.Controllers
         }
 
         // GET: Products/Delete/5
+        [Authorize(Roles = "Administrator, Stock manager")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -153,6 +162,7 @@ namespace Inventory_Management_System.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator, Stock manager")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var product = await _context.Products.FindAsync(id);

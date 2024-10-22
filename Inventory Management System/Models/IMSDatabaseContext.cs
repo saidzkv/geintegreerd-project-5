@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Inventory_Management_System.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Inventory_Management_System.Models
 {
-    public class IMSDatabaseContext : DbContext
+    public class IMSDatabaseContext : IdentityDbContext
     {
         public IMSDatabaseContext() 
         {
