@@ -5,12 +5,23 @@
 }
 
 <h1>Analytics</h1>
+@if (Model.Any())
+{
+    <h2>@Model.FirstOrDefault().Product.Naam</h2>
+}
+
+<div class="col-md-8 mx-auto mb-3">
+    <canvas id="myChart"></canvas>
+</div>
 
 <table class="table table-dark table-hover">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Hoeveelheid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Datum)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Product)
@@ -25,6 +36,9 @@
                 @Html.DisplayFor(modelItem => item.Hoeveelheid)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Datum)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Product.ProductId)
             </td>
             <td>
@@ -35,3 +49,42 @@
 }
     </tbody>
 </table>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    Chart.defaults.color = '#ffffff';
+
+
+    const ctx = document.getElementById('myChart');
+    let labels = [];
+    let data = [];
+    @foreach (var item in Model.Take(10))
+    {
+        @: labels.push(`@item.Datum.ToString("dd-MM-yyyy")`)
+        @: data.push(@item.Hoeveelheid)
+    }
+
+    labels.reverse()
+    data.reverse();
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Hoeveelheid',
+                data: data,
+                borderWidth: 1.5,
+                pointHitRadius: 15
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
