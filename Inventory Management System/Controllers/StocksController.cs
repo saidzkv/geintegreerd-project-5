@@ -117,7 +117,7 @@ namespace Inventory_Management_System.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Analytics), new { id= stock.ProductId});
             }
             ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", stock.ProductId);
             return View(stock);
@@ -154,7 +154,7 @@ namespace Inventory_Management_System.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Analytics), new {id = stock.ProductId});
         }
 
         private bool StockExists(int id)

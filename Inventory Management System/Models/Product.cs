@@ -10,6 +10,6 @@
 
         public int Stock { get; set; }
 
-        public ICollection<Stock>? Stocks { get; } = new List<Stock>();
+        public ICollection<Stock> Stocks { get; } = new List<Stock>();
     }
 }

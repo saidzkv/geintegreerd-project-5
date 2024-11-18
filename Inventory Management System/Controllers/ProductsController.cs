@@ -115,7 +115,7 @@ namespace Inventory_Management_System.Controllers
 
                     var product2 = await _context.Products.FirstOrDefaultAsync(t => t.ProductId == product.ProductId);
                     var stock2 = await _context.Stock.OrderByDescending(s => s.StockId).FirstOrDefaultAsync(t => t.ProductId == product.ProductId);
-                    if (product2.Stock!=stock2.Hoeveelheid)
+                    if ((stock2 == null) || (product2.Stock!=stock2.Hoeveelheid))
                     {
                         Stock stock = new Stock();
                         stock.Hoeveelheid = product.Stock;
